@@ -1,5 +1,4 @@
 package com.perdidoseachados.perdidoseachados.Servicies;
-import com.perdidoseachados.perdidoseachados.DTOs.CategoriaDTO;
 import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
 import com.perdidoseachados.perdidoseachados.Entidades.*;
 import com.perdidoseachados.perdidoseachados.Repository.*;
@@ -8,9 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,15 +32,15 @@ public class ItemService {
 
     @Transactional
     public List <ItemDTO>  findAll(){
-        List<Item> donativoOtorgas = itemRepository.findAll();
-        return donativoOtorgas.stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
+        List<Item> itens = itemRepository.findAll();
+        return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
     }
 
     @Transactional
     public ItemDTO findById(Long id){
         Optional <Item> optional = itemRepository.findById(id);
         Item entity = optional.orElseThrow(() -> new EntityNotFoundException("Item nao encontrado"));
-        return new ItemDTO(entity) ;
+        return new ItemDTO(entity,entity.getUsuario()) ;
     }
 
     @Transactional
