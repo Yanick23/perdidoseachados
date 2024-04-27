@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class Item {
     @JoinColumn(name = "localizacao_id")
     private Localizacao localizacao;
     private String Descricao;
-    private LocalDateTime dataEhoraEncontradoOuPerdido;
-    private LocalDateTime expriracaoNoFeed;
+    private LocalDate dataEhoraEncontradoOuPerdido;
+    private LocalDate expriracaoNoFeed;
     @ManyToOne
     @JoinColumn(name = "estado_id")
     private Estado estado;
@@ -32,5 +33,6 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
 
 }
