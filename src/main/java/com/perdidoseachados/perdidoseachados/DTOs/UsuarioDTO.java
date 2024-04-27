@@ -27,8 +27,8 @@ public class UsuarioDTO {
 
     public UsuarioDTO(Usuario usuario){
         this.setId(usuario.getId());
-        this.setPrimeiroNome(usuario.getPrimeiro_nome());
-        this.setSegundoNome(usuario.getSegundo_nome());
+        this.setPrimeiroNome(usuario.getPrimeiroNome());
+        this.setSegundoNome(usuario.getSegundoNome());
         this.setPassword(usuario.getPassword());
         this.setTelefone(usuario.getTelefone());
         this.setFoto(usuario.getFoto());
