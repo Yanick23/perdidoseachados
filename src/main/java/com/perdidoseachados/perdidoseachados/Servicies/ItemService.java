@@ -1,14 +1,13 @@
 package com.perdidoseachados.perdidoseachados.Servicies;
-import com.perdidoseachados.perdidoseachados.DTOs.CategoriaDTO;
 import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
 import com.perdidoseachados.perdidoseachados.Entidades.*;
 import com.perdidoseachados.perdidoseachados.Repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,15 +32,15 @@ public class ItemService {
 
     @Transactional
     public List <ItemDTO>  findAll(){
-        List<Item> donativoOtorgas = itemRepository.findAll();
-        return donativoOtorgas.stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
+        List<Item> itens = itemRepository.findAll();
+        return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
     }
 
     @Transactional
     public ItemDTO findById(Long id){
         Optional <Item> optional = itemRepository.findById(id);
         Item entity = optional.orElseThrow(() -> new EntityNotFoundException("Item nao encontrado"));
-        return new ItemDTO(entity) ;
+        return new ItemDTO(entity,entity.getUsuario()) ;
     }
 
     @Transactional
@@ -50,6 +49,27 @@ public class ItemService {
         mapDTOTOItem(entity,itemDTO);
         entity = itemRepository.save(entity);
         return new ItemDTO(entity);
+    }
+
+    public ItemDTO Update (Long id,ItemDTO itemDTO){
+
+        Item entity = itemRepository.findById(id).orElseThrow( () -> new RuntimeException("Item nao encontrado, falha ao fazer update do item"));
+        mapDTOTOItem(entity,itemDTO);
+        entity = itemRepository.save(entity);
+        return new ItemDTO(entity);
+
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            itemRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+
+            //excesao
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void mapDTOTOItem(Item entity, ItemDTO itemDTO){
@@ -79,18 +99,6 @@ public class ItemService {
         entity.setDataEhoraEncontradoOuPerdido(itemDTO.getDataEhoraEncontradoOuPerdido());
         entity.setNome(itemDTO.getNome());
         entity.setExpriracaoNoFeed(itemDTO.getExpriracaoNoFeed());
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
