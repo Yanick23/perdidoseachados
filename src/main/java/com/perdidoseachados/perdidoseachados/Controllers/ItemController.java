@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/itens")
-public class ItemController {
+public class ItemController<itemDTO> {
 
     @Autowired
     ItemService itemService;
@@ -32,9 +32,23 @@ public class ItemController {
         return ResponseEntity.created(uri).body(itemDTO);
     }
 
+    @PutMapping(value ="/update/{id}")
+    public ResponseEntity <ItemDTO> update (@PathVariable Long id,@RequestBody ItemDTO itemDTO){
+        itemDTO = itemService.Update(id,itemDTO);
+        return  ResponseEntity.ok(itemDTO);
+    }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity <ItemDTO> findById(@PathVariable Long id)  {
+        ItemDTO ItemDTO = itemService.findById(id);
+        return ResponseEntity.ok(ItemDTO);
 
+    }
 
-
+    @DeleteMapping(value = "/delete/{id}")
+    public  ResponseEntity delete(@PathVariable Long id){
+        itemService.delete(id);
+        return   ResponseEntity.noContent().build();
+    }
 
 }

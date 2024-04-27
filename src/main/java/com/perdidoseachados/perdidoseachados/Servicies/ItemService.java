@@ -6,7 +6,9 @@ import com.perdidoseachados.perdidoseachados.Repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,6 +54,27 @@ public class ItemService {
         return new ItemDTO(entity);
     }
 
+    public ItemDTO Update (Long id,ItemDTO itemDTO){
+
+        Item entity = itemRepository.findById(id).orElseThrow( () -> new RuntimeException("Item nao encontrado, falha ao fazer update do item"));
+        mapDTOTOItem(entity,itemDTO);
+        entity = itemRepository.save(entity);
+        return new ItemDTO(entity);
+
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            itemRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+
+            //excesao
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void mapDTOTOItem(Item entity, ItemDTO itemDTO){
 
         if (itemDTO.getLocalizacaoDTO() != null){
@@ -79,18 +102,6 @@ public class ItemService {
         entity.setDataEhoraEncontradoOuPerdido(itemDTO.getDataEhoraEncontradoOuPerdido());
         entity.setNome(itemDTO.getNome());
         entity.setExpriracaoNoFeed(itemDTO.getExpriracaoNoFeed());
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
