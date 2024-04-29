@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 @NoArgsConstructor
 @Data
-public class UsuarioDTO {
+public class
+UsuarioDTO {
     private Long  id;
     private String primeiroNome;
+    private  String email;
     private String segundoNome;
     private String password;
     private String  telefone;
@@ -22,8 +24,8 @@ public class UsuarioDTO {
     @JoinColumn(name = "role_id")
     private RoleDTO roleDTO;
     private String foto;
+    private boolean estado_da_conta = false;
     private List<ItemDTO> itensDTOs;
-
 
     public UsuarioDTO(Usuario usuario){
         this.setId(usuario.getId());
@@ -32,7 +34,9 @@ public class UsuarioDTO {
         this.setPassword(usuario.getPassword());
         this.setTelefone(usuario.getTelefone());
         this.setFoto(usuario.getFoto());
+        this.setEmail(usuario.getEmail());
         this.setRoleDTO(new RoleDTO(usuario.getRole()));
+        this.setEstado_da_conta(usuario.isEstadoDaConta());
     }
 
     public UsuarioDTO(Usuario usuario, List <Item> items){

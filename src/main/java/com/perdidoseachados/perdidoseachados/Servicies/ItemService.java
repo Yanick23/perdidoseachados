@@ -2,9 +2,11 @@ package com.perdidoseachados.perdidoseachados.Servicies;
 import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
 import com.perdidoseachados.perdidoseachados.Entidades.*;
 import com.perdidoseachados.perdidoseachados.Repository.*;
-import jakarta.persistence.EntityNotFoundException;
+import com.perdidoseachados.perdidoseachados.Servicies.exeptions.DataBaseExeption;
+import com.perdidoseachados.perdidoseachados.Servicies.exeptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,7 @@ public class ItemService {
     @Autowired
     EstadoRepository estadoRepository;
 
-    @Autowired
+   @Autowired
     UsuarioRepository usuarioRepository;
 
     @Transactional
@@ -39,7 +41,7 @@ public class ItemService {
     @Transactional
     public ItemDTO findById(Long id){
         Optional <Item> optional = itemRepository.findById(id);
-        Item entity = optional.orElseThrow(() -> new EntityNotFoundException("Item nao encontrado"));
+        Item entity = optional.orElseThrow(() -> new ResourceNotFoundException("Item "+id +" noo encontrado"));
         return new ItemDTO(entity,entity.getUsuario()) ;
     }
 
@@ -51,9 +53,10 @@ public class ItemService {
         return new ItemDTO(entity);
     }
 
+    @Transactional
     public ItemDTO Update (Long id,ItemDTO itemDTO){
 
-        Item entity = itemRepository.findById(id).orElseThrow( () -> new RuntimeException("Item nao encontrado, falha ao fazer update do item"));
+        Item entity = itemRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Item nao encontrado, falha ao fazer update do item"));
         mapDTOTOItem(entity,itemDTO);
         entity = itemRepository.save(entity);
         return new ItemDTO(entity);
@@ -65,31 +68,34 @@ public class ItemService {
         try {
             itemRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-
-            //excesao
-        } catch (Exception e) {
-            e.printStackTrace();
+            throw new ResourceNotFoundException("Id not found: " + id);
+        } catch (DataIntegrityViolationException ee) {
+            throw new DataBaseExeption("Integrity violation");
         }
     }
 
     public void mapDTOTOItem(Item entity, ItemDTO itemDTO){
 
         if (itemDTO.getLocalizacaoDTO() != null){
-            Localizacao localizacao = localizacaoRepository.getReferenceById(itemDTO.getLocalizacaoDTO().getId());
+            Localizacao localizacao = localizacaoRepository.findById(itemDTO.getLocalizacaoDTO().getId())
+            .orElseThrow(() -> new ResourceNotFoundException(" Localicao nao encontrado (ItemService -> mapDTOTOItem() )"));
             entity.setLocalizacao(localizacao);
         }
         if(itemDTO.getCategoriaDTO() != null){
-            Categoria categoria = categoriaRepository.getReferenceById(itemDTO.getCategoriaDTO().getId());
+            Categoria categoria = categoriaRepository.findById(itemDTO.getCategoriaDTO().getId())
+            .orElseThrow(() -> new ResourceNotFoundException(" Categoria nao encontrado (ItemService -> mapDTOTOItem() )"));
             entity.setCategoria(categoria);
         }
 
         if(itemDTO.getUsuarioDTO() != null ){
-            Usuario usuario = usuarioRepository.getReferenceById(itemDTO.getCategoriaDTO().getId());
+            Usuario usuario = usuarioRepository.findById(itemDTO.getCategoriaDTO().getId())
+            .orElseThrow(() -> new ResourceNotFoundException(" Usuario nao encontrado (ItemService -> mapDTOTOItem() )"));
             entity.setUsuario(usuario);
         }
 
         if(itemDTO.getEstadoDTO() != null ){
-            Estado estado = estadoRepository.getReferenceById(itemDTO.getEstadoDTO().getId());
+            Estado estado = estadoRepository.findById(itemDTO.getEstadoDTO().getId())
+            .orElseThrow(() -> new ResourceNotFoundException(" Estado nao encontrado (ItemService -> mapDTOTOItem() )"));
             entity.setEstado(estado);
         }
 

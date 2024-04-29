@@ -1,5 +1,5 @@
 package com.perdidoseachados.perdidoseachados.constantes;
 
-public enum EstadoAtualItem {
-    Devolvido,Nao_Devolvido
+public enum EstadoDeDevolucao {
+    DEVOLVIDO,NAO_DEVOLVIDO
 }

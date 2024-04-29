@@ -2,11 +2,13 @@ package com.perdidoseachados.perdidoseachados.DTOs;
 
 
 import com.perdidoseachados.perdidoseachados.Entidades.*;
+import com.perdidoseachados.perdidoseachados.constantes.EstadoDeDevolucao;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -17,12 +19,12 @@ public class ItemDTO {
 
     private Long id;
     private String nome;
-    private Boolean estadoDeDevolucao;
+    private EstadoDeDevolucao estadoDeDevolucao;
     private CategoriaDTO categoriaDTO;
     private LocalizacaoDTO localizacaoDTO;
     private String Descricao;
-    private LocalDate dataEhoraEncontradoOuPerdido;
-    private LocalDate expriracaoNoFeed;
+    private Instant dataEhoraEncontradoOuPerdido;
+    private Instant expriracaoNoFeed;
     private EstadoDTO estadoDTO;
     private String foto;
     private UsuarioDTO usuarioDTO;
@@ -37,10 +39,11 @@ public class ItemDTO {
         this.setFoto(item.getFoto());
         this.setExpriracaoNoFeed(item.getExpriracaoNoFeed());
         this.setDataEhoraEncontradoOuPerdido(item.getDataEhoraEncontradoOuPerdido());
-        this.setEstadoDeDevolucao(item.getEstadoDeDevolucao());
+        this.setDescricao(item.getDescricao());
     }
 
     public ItemDTO(Item item, Usuario usuario){
+        this(item);
         this.setUsuarioDTO(new UsuarioDTO(usuario));
     }
 
