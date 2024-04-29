@@ -4,7 +4,6 @@ import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
 import com.perdidoseachados.perdidoseachados.Servicies.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,7 +23,7 @@ public class ItemController<itemDTO> {
         return  ResponseEntity.ok(itemService.findAll()) ;
     }
 
-    @PostMapping
+    @PostMapping("/registar")
     public ResponseEntity <ItemDTO> insert( @RequestBody ItemDTO itemDTO){
         itemDTO = itemService.Insert(itemDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").
@@ -36,6 +35,13 @@ public class ItemController<itemDTO> {
     public ResponseEntity <ItemDTO> update (@PathVariable Long id,@RequestBody ItemDTO itemDTO){
         itemDTO = itemService.Update(id,itemDTO);
         return  ResponseEntity.ok(itemDTO);
+    }
+
+    @GetMapping("/meusitens")
+    public ResponseEntity<List<ItemDTO>> findByUsuario()  {
+   List <ItemDTO> list = itemService.itensDeUsuarioCorrente();
+        return ResponseEntity.ok( list);
+
     }
 
     @GetMapping(value = "/{id}")

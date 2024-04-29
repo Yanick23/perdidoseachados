@@ -19,7 +19,7 @@ public class SecurityConfiguration  {
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/usuarios/login", // Url que usaremos para fazer login
-            "/usuarios/registar" // Url que usaremos para criar um usuário
+            "/usuarios/registar","/itens/meusitens"  // Url que usaremos para criar um usuário
 
     };
 
@@ -27,7 +27,13 @@ public class SecurityConfiguration  {
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
             "/categorias/**","/categorias","/localizacoes","/localizacoes/**"
+
     };
+
+    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN = {
+            "/itens/registar" // URL que requer autenticação para acessar os itens do usuário
+    };
+
 
 
     @Bean
@@ -37,7 +43,11 @@ public class SecurityConfiguration  {
                         request -> request
                                 .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
                                 .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).permitAll()
+                                .requestMatchers(HttpMethod.GET,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
+                                .requestMatchers(HttpMethod.POST, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated() // Precisa de autenticação tanto para usuários quanto para administradores
+                                .requestMatchers(HttpMethod.GET, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated() // Precisa de autenticação tanto para usuários quanto para administradores
+
+
                                 .anyRequest().authenticated()
 
                                 )

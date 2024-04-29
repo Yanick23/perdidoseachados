@@ -32,10 +32,21 @@ public class ItemService {
    @Autowired
     UsuarioRepository usuarioRepository;
 
+   @Autowired
+   AuthService authService;
+
     @Transactional
     public List <ItemDTO>  findAll(){
         List<Item> itens = itemRepository.findAll();
         return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
+    }
+
+    public List<ItemDTO> itensDeUsuarioCorrente(){
+        Usuario usuario = authService.authenticateed();
+        List<Item> itens = itemRepository.findByUsuario(usuario);
+
+       return itens.stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
+
     }
 
     @Transactional
@@ -48,7 +59,10 @@ public class ItemService {
     @Transactional
     public ItemDTO Insert (ItemDTO itemDTO){
         Item entity = new Item();
+        Usuario usuario = authService.authenticateed();
+
         mapDTOTOItem(entity,itemDTO);
+        entity.setUsuario(usuario);
         entity = itemRepository.save(entity);
         return new ItemDTO(entity);
     }

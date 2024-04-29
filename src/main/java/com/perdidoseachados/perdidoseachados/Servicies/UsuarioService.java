@@ -77,6 +77,8 @@ public class UsuarioService implements UserDetailsService {
     }
 
 
+
+
     @Transactional
     public UsuarioDTO insert( UsuarioInsertDTO usuarioDTO) {
         Usuario entity = new Usuario();
