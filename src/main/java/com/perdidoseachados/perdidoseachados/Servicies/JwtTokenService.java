@@ -60,13 +60,11 @@ public class JwtTokenService {
             throw new RuntimeException("TokenInvalido");
         }
     }
-
-    private Instant creationDate() {
-        return ZonedDateTime.now(ZoneId.of("America/Recife")).toInstant();
+    private static Instant creationDate() {
+        return ZonedDateTime.now(ZoneId.of("Africa/Maputo")).toInstant();
     }
 
-    private Instant expirationDate() {
-        return ZonedDateTime.now(ZoneId.of("America/Recife")).plusHours(8).toInstant();
+    private static Instant expirationDate() {
+        return ZonedDateTime.now(ZoneId.of("Africa/Maputo")).plusHours(8).toInstant();
     }
-
 }

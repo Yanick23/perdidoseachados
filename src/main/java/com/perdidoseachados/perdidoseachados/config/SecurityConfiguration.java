@@ -19,7 +19,7 @@ public class SecurityConfiguration  {
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/usuarios/login", // Url que usaremos para fazer login
-            "/usuarios/registar","/itens/meusitens"  // Url que usaremos para criar um usuário
+            "/usuarios/registar"  // Url que usaremos para criar um usuário
 
     };
 
@@ -31,7 +31,7 @@ public class SecurityConfiguration  {
     };
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN = {
-            "/itens/registar" // URL que requer autenticação para acessar os itens do usuário
+            "/itens/registar","/itens/itens_do_usuario_logado","/itens/feed" // URL que requer autenticação para acessar os itens do usuário
     };
 
 
