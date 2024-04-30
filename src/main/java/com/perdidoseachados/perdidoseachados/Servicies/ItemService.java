@@ -4,12 +4,14 @@ import com.perdidoseachados.perdidoseachados.Entidades.*;
 import com.perdidoseachados.perdidoseachados.Repository.*;
 import com.perdidoseachados.perdidoseachados.Servicies.exeptions.DataBaseExeption;
 import com.perdidoseachados.perdidoseachados.Servicies.exeptions.ResourceNotFoundException;
+import com.perdidoseachados.perdidoseachados.constantes.EstadoDeDevolucao;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +40,13 @@ public class ItemService {
     @Transactional
     public List <ItemDTO>  findAll(){
         List<Item> itens = itemRepository.findAll();
+        return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public List <ItemDTO>  findItemsForFeed(){
+        List<Item> itens = itemRepository.findItemsForFeed(EstadoDeDevolucao.NAO_DEVOLVIDO, Instant.now());
         return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
     }
 
@@ -118,7 +127,7 @@ public class ItemService {
         entity.setEstadoDeDevolucao(itemDTO.getEstadoDeDevolucao());
         entity.setDataEhoraEncontradoOuPerdido(itemDTO.getDataEhoraEncontradoOuPerdido());
         entity.setNome(itemDTO.getNome());
-        entity.setExpriracaoNoFeed(itemDTO.getExpriracaoNoFeed());
+        entity.setExpiracaoNoFeed(itemDTO.getExpriracaoNoFeed());
     }
 
 

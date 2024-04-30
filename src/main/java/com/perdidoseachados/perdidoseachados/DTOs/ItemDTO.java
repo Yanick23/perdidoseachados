@@ -28,6 +28,9 @@ public class ItemDTO {
     private EstadoDTO estadoDTO;
     private String foto;
     private UsuarioDTO usuarioDTO;
+    private String cor;
+    private String marca;
+    private String modelo;
 
     public ItemDTO(Item item){
         this.setId(item.getId());
@@ -37,9 +40,12 @@ public class ItemDTO {
         this.setNome(item.getNome());
         this.setLocalizacaoDTO(new LocalizacaoDTO(item.getLocalizacao()));
         this.setFoto(item.getFoto());
-        this.setExpriracaoNoFeed(item.getExpriracaoNoFeed());
+        this.setExpriracaoNoFeed(item.getExpiracaoNoFeed());
         this.setDataEhoraEncontradoOuPerdido(item.getDataEhoraEncontradoOuPerdido());
         this.setDescricao(item.getDescricao());
+        this.setCor(item.getCor());
+        this.setMarca(item.getMarca());
+        this.setModelo(item.getModelo());
     }
 
     public ItemDTO(Item item, Usuario usuario){

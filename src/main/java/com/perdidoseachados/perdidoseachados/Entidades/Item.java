@@ -30,7 +30,7 @@ public class Item {
     private Instant dataEhoraEncontradoOuPerdido;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant expriracaoNoFeed;
+    private Instant expiracaoNoFeed;
     @ManyToOne
     @JoinColumn(name = "estado_id")
     private Estado estado;
@@ -38,6 +38,10 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    private String cor;
+    private String marca;
+    private String modelo;
 
 
 

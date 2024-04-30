@@ -23,6 +23,13 @@ public class ItemController<itemDTO> {
         return  ResponseEntity.ok(itemService.findAll()) ;
     }
 
+    @GetMapping("/feed")
+    public ResponseEntity <List<ItemDTO>> findItemsForFeed(){
+        return  ResponseEntity.ok(itemService.findItemsForFeed()) ;
+    }
+
+
+
     @PostMapping("/registar")
     public ResponseEntity <ItemDTO> insert( @RequestBody ItemDTO itemDTO){
         itemDTO = itemService.Insert(itemDTO);
@@ -37,7 +44,7 @@ public class ItemController<itemDTO> {
         return  ResponseEntity.ok(itemDTO);
     }
 
-    @GetMapping("/meusitens")
+    @GetMapping("/itens_do_usuario_logado")
     public ResponseEntity<List<ItemDTO>> findByUsuario()  {
    List <ItemDTO> list = itemService.itensDeUsuarioCorrente();
         return ResponseEntity.ok( list);
