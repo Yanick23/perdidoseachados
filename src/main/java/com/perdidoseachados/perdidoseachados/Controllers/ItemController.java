@@ -2,12 +2,14 @@ package com.perdidoseachados.perdidoseachados.Controllers;
 
 import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
 import com.perdidoseachados.perdidoseachados.Servicies.ItemService;
+import com.perdidoseachados.perdidoseachados.constantes.EstadoDeDevolucao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 
 
@@ -50,7 +52,6 @@ public class ItemController<itemDTO> {
         return ResponseEntity.ok( list);
 
     }
-
     @GetMapping(value = "/{id}")
     public ResponseEntity <ItemDTO> findById(@PathVariable Long id)  {
         ItemDTO ItemDTO = itemService.findById(id);
@@ -62,6 +63,24 @@ public class ItemController<itemDTO> {
     public  ResponseEntity delete(@PathVariable Long id){
         itemService.delete(id);
         return   ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<ItemDTO>> findItemsByFilters(
+            @RequestParam(required = false) String estadoDeDevolucaoStr,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String localizacao,
+            @RequestParam(required = false) String estado) {
+
+        EstadoDeDevolucao estadoDeDevolucao = null;
+        if (estadoDeDevolucaoStr != null && !estadoDeDevolucaoStr.isEmpty()) {
+            estadoDeDevolucao = EstadoDeDevolucao.valueOf(estadoDeDevolucaoStr.toUpperCase());
+        }
+
+
+        List<ItemDTO> filteredItems = itemService.findItemsByFilters(estadoDeDevolucao, categoria, localizacao, estado);
+
+        return ResponseEntity.ok(filteredItems);
     }
 
 }

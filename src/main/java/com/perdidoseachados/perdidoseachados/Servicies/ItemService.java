@@ -43,6 +43,12 @@ public class ItemService {
         return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
     }
 
+    public List<ItemDTO> findItemsByFilters(EstadoDeDevolucao estado, String nomeCategoria,
+                                         String nomeLocalizacao, String nomeEstado) {
+        return  itemRepository.findItemsByFilters(estado, Instant.now(), nomeCategoria, nomeLocalizacao, nomeEstado)
+                .stream().map(item -> new ItemDTO(item)).collect(Collectors.toList());
+    }
+
 
     @Transactional
     public List <ItemDTO>  findItemsForFeed(){

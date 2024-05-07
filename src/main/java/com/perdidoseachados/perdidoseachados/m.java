@@ -55,16 +55,7 @@ class Radix {
 
         // Imprime o array ordenado
        print(arr, n);
-       /*
-        int numero = 12345;
-        int divisor = 1;
 
-        while (numero > 0) {
-            int digito = numero % 10;
-            System.out.print(digito + " "); // Imprime os dígitos na ordem inversa (5 4 3 2 1)
-            numero /= 10;
-            divisor *= 10;
-        }*/
     }
 
     // Ordena um array de inteiros usando Radix Sort

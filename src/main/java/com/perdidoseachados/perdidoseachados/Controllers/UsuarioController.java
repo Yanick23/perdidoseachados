@@ -1,13 +1,19 @@
 package com.perdidoseachados.perdidoseachados.Controllers;
 
+import com.perdidoseachados.perdidoseachados.DTOs.GenerateResponse;
+import com.perdidoseachados.perdidoseachados.DTOs.ResponseTokenDTO;
 import com.perdidoseachados.perdidoseachados.DTOs.UsuarioInsertDTO;
 import com.perdidoseachados.perdidoseachados.DTOs.UsuarioDTO;
+import com.perdidoseachados.perdidoseachados.Entidades.Usuario;
 import com.perdidoseachados.perdidoseachados.Servicies.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import java.net.URI;
 import java.util.List;
@@ -26,13 +32,21 @@ public class UsuarioController
         return  ResponseEntity.ok(usuarioService.findAll()) ;
     }
 
-    @PostMapping("/registar")
+    @PostMapping(value = "/registar")
     public ResponseEntity <UsuarioDTO> insert(@RequestBody UsuarioInsertDTO usuarioDTO){
-        UsuarioDTO suarioDTO = usuarioService.insert(usuarioDTO);
+        UsuarioDTO userDTO = usuarioService.insert(usuarioDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").
-                buildAndExpand(suarioDTO.getId()).toUri();
-        return ResponseEntity.created(uri).body(usuarioDTO);
+                buildAndExpand(userDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(userDTO);
     }
+
+    @PostMapping(value = "/reset")
+    public ResponseEntity<GenerateResponse> resetPassword(HttpServletRequest request, @RequestBody UsuarioDTO userEmail) {
+        GenerateResponse generateResponse = usuarioService.resetPassword(request,userEmail.getEmail());
+
+        return  ResponseEntity.ok(generateResponse);
+    }
+
 
     @PutMapping(value ="/update/{id}")
     public ResponseEntity <UsuarioDTO> update (@PathVariable Long id,@RequestBody UsuarioDTO usuarioDTO){
@@ -56,10 +70,10 @@ public class UsuarioController
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody UsuarioInsertDTO loginUserDto) {
+    public ResponseEntity<ResponseTokenDTO> authenticateUser(@RequestBody UsuarioInsertDTO loginUserDto) {
         String token = usuarioService.authenticateUser(loginUserDto);
 
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseTokenDTO(token), HttpStatus.OK);
     }
 
 

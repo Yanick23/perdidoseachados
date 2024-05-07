@@ -22,14 +22,13 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "AND (:agora IS NULL OR i.expiracaoNoFeed > :agora) " +
             "AND (:nomeCategoria IS NULL OR i.categoria.nome = :nomeCategoria) " +
             "AND (:nomeLocalizacao IS NULL OR i.localizacao.nome = :nomeLocalizacao) " +
-            "AND (:nomeEstado IS NULL OR i.estado.nome = :nomeEstado) " +
-            "AND (:data IS NULL OR i.dataEhoraEncontradoOuPerdido > :data)")
+            "AND (:nomeEstado IS NULL OR i.estado.nome = :nomeEstado) ")
     List<Item> findItemsByFilters(@Param("estado") EstadoDeDevolucao estado,
                                   @Param("agora") Instant agora,
                                   @Param("nomeCategoria") String nomeCategoria,
                                   @Param("nomeLocalizacao") String nomeLocalizacao,
-                                  @Param("nomeEstado") String nomeEstado,
-                                  @Param("data") Instant data);
+                                  @Param("nomeEstado") String nomeEstado);
+
 
 
 

@@ -18,7 +18,6 @@ UsuarioDTO {
     private String primeiroNome;
     private  String email;
     private String segundoNome;
-    private String password;
     private String  telefone;
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -31,7 +30,6 @@ UsuarioDTO {
         this.setId(usuario.getId());
         this.setPrimeiroNome(usuario.getPrimeiro_nome());
         this.setSegundoNome(usuario.getSegundo_nome());
-        this.setPassword(usuario.getPassword());
         this.setTelefone(usuario.getTelefone());
         this.setFoto(usuario.getFoto());
         this.setEmail(usuario.getEmail());

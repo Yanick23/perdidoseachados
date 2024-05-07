@@ -12,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +22,8 @@ public class SecurityConfiguration  {
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/usuarios/login", // Url que usaremos para fazer login
-            "/usuarios/registar"  // Url que usaremos para criar um usuário
+            "/usuarios/registar" ,"/usuarios/reset" // Url que usaremos para criar um usuário
+            ,"/usuarios","/itens/filtrar"
 
     };
 
@@ -42,17 +46,19 @@ public class SecurityConfiguration  {
                 authorizeHttpRequests(
                         request -> request
                                 .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-                                .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                                .requestMatchers(HttpMethod.POST, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated() // Precisa de autenticação tanto para usuários quanto para administradores
-                                .requestMatchers(HttpMethod.GET, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated() // Precisa de autenticação tanto para usuários quanto para administradores
+                                .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).permitAll()
+                                .requestMatchers(HttpMethod.GET,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).permitAll()
+                                .requestMatchers(HttpMethod.POST, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).permitAll()// Precisa de autenticação tanto para usuários quanto para administradores
+                                .requestMatchers(HttpMethod.GET, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).permitAll()// Precisa de autenticação tanto para usuários quanto para administradores
 
 
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
 
                                 )
                 .addFilterBefore(userAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
     }
+
+
 
 
 
