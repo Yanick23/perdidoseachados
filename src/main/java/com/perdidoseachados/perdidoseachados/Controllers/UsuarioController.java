@@ -1,10 +1,9 @@
 package com.perdidoseachados.perdidoseachados.Controllers;
 
-import com.perdidoseachados.perdidoseachados.DTOs.GenerateResponse;
-import com.perdidoseachados.perdidoseachados.DTOs.ResponseTokenDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.UsuarioInsertDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.UsuarioDTO;
+import com.perdidoseachados.perdidoseachados.DTOs.*;
+import com.perdidoseachados.perdidoseachados.Entidades.Item;
 import com.perdidoseachados.perdidoseachados.Entidades.Usuario;
+import com.perdidoseachados.perdidoseachados.Servicies.AuthService;
 import com.perdidoseachados.perdidoseachados.Servicies.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +16,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/usuarios")
-public class UsuarioController
-{
-
-
+public class UsuarioController{
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    AuthService authService;
 
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> findAll(){
@@ -45,6 +45,14 @@ public class UsuarioController
         GenerateResponse generateResponse = usuarioService.resetPassword(request,userEmail.getEmail());
 
         return  ResponseEntity.ok(generateResponse);
+    }
+
+    @GetMapping(value = "/usuario-logado")
+    public UsuarioDTO usuarioLogado(){
+        Usuario usuario = authService.authenticateed();
+
+        return new UsuarioDTO(usuario);
+
     }
 
 
@@ -73,7 +81,7 @@ public class UsuarioController
     public ResponseEntity<ResponseTokenDTO> authenticateUser(@RequestBody UsuarioInsertDTO loginUserDto) {
         String token = usuarioService.authenticateUser(loginUserDto);
 
-        return new ResponseEntity<>(new ResponseTokenDTO(token), HttpStatus.OK);
+        return new ResponseEntity<>( new ResponseTokenDTO(token), HttpStatus.OK);
     }
 
 

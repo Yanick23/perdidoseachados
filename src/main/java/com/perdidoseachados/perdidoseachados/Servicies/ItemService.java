@@ -95,7 +95,11 @@ public class ItemService {
     @Transactional
     public void delete(Long id) {
         try {
-            itemRepository.deleteById(id);
+            Item entity = itemRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Item nao encontrado, falha ao fazer update do item"));
+            if (authService.authenticateed().getId() == entity.getUsuario().getId() || authService.authenticateed().hasRole("ADMIN")){
+                itemRepository.deleteById(id);
+            }
+
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Id not found: " + id);
         } catch (DataIntegrityViolationException ee) {

@@ -1,5 +1,7 @@
 package com.perdidoseachados.perdidoseachados.Repository;
+import com.perdidoseachados.perdidoseachados.Entidades.Estado;
 import com.perdidoseachados.perdidoseachados.Entidades.Item;
+import com.perdidoseachados.perdidoseachados.Entidades.Localizacao;
 import com.perdidoseachados.perdidoseachados.Entidades.Usuario;
 import com.perdidoseachados.perdidoseachados.constantes.EstadoDeDevolucao;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,7 +32,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                                   @Param("nomeEstado") String nomeEstado);
 
 
-
+    
+    List<Item> findByEstado(Estado estado);
+    List<Item> findByLocalizacao(Localizacao localizacao);
+    
 
 
 }

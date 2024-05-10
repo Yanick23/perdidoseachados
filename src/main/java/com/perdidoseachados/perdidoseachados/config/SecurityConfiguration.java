@@ -30,7 +30,7 @@ public class SecurityConfiguration  {
     // Endpoints que requerem autenticação para serem acessados
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
-            "/categorias/**","/categorias","/localizacoes","/localizacoes/**"
+            "/categorias/**","/categorias","/localizacoes","/localizacoes","/estados"
 
     };
 
@@ -46,13 +46,14 @@ public class SecurityConfiguration  {
                 authorizeHttpRequests(
                         request -> request
                                 .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-                                .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).permitAll()
+                                .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.GET,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).permitAll()
-                                .requestMatchers(HttpMethod.POST, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).permitAll()// Precisa de autenticação tanto para usuários quanto para administradores
-                                .requestMatchers(HttpMethod.GET, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).permitAll()// Precisa de autenticação tanto para usuários quanto para administradores
+                                .requestMatchers(HttpMethod.GET,"/usuarios").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated()// Precisa de autenticação tanto para usuários quanto para administradores
+                                .requestMatchers(HttpMethod.GET, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated()// Precisa de autenticação tanto para usuários quanto para administradores
 
 
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
 
                                 )
                 .addFilterBefore(userAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();
