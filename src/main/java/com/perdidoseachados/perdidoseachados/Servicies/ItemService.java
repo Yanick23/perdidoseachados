@@ -60,7 +60,7 @@ public class ItemService {
         Usuario usuario = authService.authenticateed();
         List<Item> itens = itemRepository.findByUsuario(usuario);
 
-       return itens.stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
+       return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
 
     }
 
@@ -75,6 +75,8 @@ public class ItemService {
     public ItemDTO Insert (ItemDTO itemDTO){
         Item entity = new Item();
         Usuario usuario = authService.authenticateed();
+        entity.setEstadoDeDevolucao(EstadoDeDevolucao.NAO_DEVOLVIDO);
+      
 
         mapDTOTOItem(entity,itemDTO);
         entity.setUsuario(usuario);
@@ -135,9 +137,9 @@ public class ItemService {
         entity.setDescricao(itemDTO.getDescricao());
         entity.setFoto(itemDTO.getFoto());
         entity.setEstadoDeDevolucao(itemDTO.getEstadoDeDevolucao());
-        entity.setDataEhoraEncontradoOuPerdido(itemDTO.getDataEhoraEncontradoOuPerdido());
+        entity.setDataEhoraEncontradoOuPerdido(Instant.now());
         entity.setNome(itemDTO.getNome());
-        entity.setExpiracaoNoFeed(itemDTO.getExpriracaoNoFeed());
+      
     }
 
 

@@ -39,10 +39,6 @@ public class Item {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    private String cor;
-    private String marca;
-    private String modelo;
-
 
 
 
