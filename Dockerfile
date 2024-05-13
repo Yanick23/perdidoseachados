@@ -21,5 +21,5 @@ EXPOSE 8080
 # Copia o arquivo JAR da fase de construção
 COPY --from=build /target/perdidoseachados-0.0.1-SNAPSHOT.jar app.jar
 
-# Define o ponto de entrada
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
