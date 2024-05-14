@@ -48,7 +48,8 @@ public class SecurityConfiguration  {
                                 .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
                                 .requestMatchers(HttpMethod.POST,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.GET,ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).permitAll()
-                                .requestMatchers(HttpMethod.GET,"/usuarios").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/usuarios").permitAll()
+                               
                                 .requestMatchers(HttpMethod.POST, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated()// Precisa de autenticação tanto para usuários quanto para administradores
                                 .requestMatchers(HttpMethod.GET, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated()// Precisa de autenticação tanto para usuários quanto para administradores
 
