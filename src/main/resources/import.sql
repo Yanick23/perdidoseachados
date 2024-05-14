@@ -6,12 +6,12 @@ INSERT INTO Usuario (estado_da_conta, password, foto, primeiro_nome, segundo_nom
 INSERT INTO Usuario (estado_da_conta, password, foto, primeiro_nome, segundo_nome,email, telefone, role_id) VALUES (true, 'outraSenha456', 'caminho/para/foto2.jpg', 'Maria',  'Santos','Luis@gmail.com', '+9876543210', 1);
 INSERT INTO Usuario (estado_da_conta, password, foto, primeiro_nome, segundo_nome,email, telefone, role_id) VALUES (true, 'senhaSegura789', 'caminho/para/foto3.jpg', 'Pedro',  'Oliveira','pedro23@gmail.com', '+0123456789',2);
 
-INSERT INTO localizacao (nome) VALUES ('Localização 1');
-INSERT INTO localizacao (nome) VALUES ('Localização 2');
-INSERT INTO localizacao (nome) VALUES ('Localização 3');
-INSERT INTO localizacao (nome) VALUES ('Localização 4');
+INSERT INTO localizacao (nome) VALUES ('Localizacao 1');
+INSERT INTO localizacao (nome) VALUES ('Localizacaoo 2');
+INSERT INTO localizacao (nome) VALUES ('Localizacaoo 3');
+INSERT INTO localizacao (nome) VALUES ('Localizacao 4');
 
-INSERT INTO Categoria (nome) VALUES  ('Eletrônicos');
+INSERT INTO Categoria (nome) VALUES  ('Eletronicos');
 INSERT INTO Categoria (nome) VALUES  ('Livros');
 INSERT INTO Categoria (nome) VALUES   ('Roupas');
 INSERT INTO Categoria (nome) VALUES  ('Bijuteria');
