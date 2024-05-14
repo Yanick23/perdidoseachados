@@ -75,10 +75,12 @@ public class ItemService {
     public ItemDTO Insert (ItemDTO itemDTO){
         Item entity = new Item();
         Usuario usuario = authService.authenticateed();
-        entity.setEstadoDeDevolucao(EstadoDeDevolucao.NAO_DEVOLVIDO);
-      
+       
 
         mapDTOTOItem(entity,itemDTO);
+        entity.setEstadoDeDevolucao(EstadoDeDevolucao.NAO_DEVOLVIDO);
+         entity.setDatapublicacao(Instant.now());
+        
         entity.setUsuario(usuario);
         entity = itemRepository.save(entity);
         return new ItemDTO(entity);
@@ -137,8 +139,13 @@ public class ItemService {
         entity.setDescricao(itemDTO.getDescricao());
         entity.setFoto(itemDTO.getFoto());
         entity.setEstadoDeDevolucao(itemDTO.getEstadoDeDevolucao());
-        entity.setDataEhoraEncontradoOuPerdido(Instant.now());
+        entity.setDataEhoraEncontradoOuPerdido(itemDTO.getDataEhoraEncontradoOuPerdido());
         entity.setNome(itemDTO.getNome());
+        if(itemDTO.getExpriracaoNoFeed()  != null) {
+        	entity.setExpiracaoNoFeed(itemDTO.getExpriracaoNoFeed());
+        	
+        }
+        
       
     }
 

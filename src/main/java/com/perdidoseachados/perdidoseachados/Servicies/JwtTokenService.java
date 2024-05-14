@@ -38,7 +38,6 @@ public class JwtTokenService {
             return JWT.create()
                     .withIssuer(ISSUER)
                     .withIssuedAt(creationDate())
-                    .withExpiresAt(expirationDate())
                     .withSubject(usuario.getUsername())
                     .withClaim("userInfo", userInfo) // Adicione o mapa de informações do usuário
                     .sign(algorithm);

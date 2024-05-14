@@ -24,6 +24,7 @@ public class ItemDTO {
     private EstadoDTO estadoDTO;
     private String foto;
     private UsuarioDTO usuarioDTO;
+    private Instant datapublicacao;
 
 
     public ItemDTO(Item item){
@@ -37,6 +38,7 @@ public class ItemDTO {
         this.setExpriracaoNoFeed(item.getExpiracaoNoFeed());
         this.setDataEhoraEncontradoOuPerdido(item.getDataEhoraEncontradoOuPerdido());
         this.setDescricao(item.getDescricao());
+        this.setDatapublicacao(item.getDatapublicacao());
 
     }
 

@@ -38,6 +38,8 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant datapublicacao;
 
 
 
