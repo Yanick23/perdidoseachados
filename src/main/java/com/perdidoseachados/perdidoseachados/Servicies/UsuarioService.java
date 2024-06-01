@@ -154,19 +154,15 @@ public class UsuarioService implements UserDetailsService {
         passwordResetTokenRepository.save(myToken);
     }
 
-    // Método responsável por autenticar um usuário e retornar um token JWT
+    
     public String authenticateUser(UsuarioInsertDTO usuarioInsertDTO) {
-        // Cria um objeto de autenticação com o email e a senha do usuário
+        
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-           new UsernamePasswordAuthenticationToken(usuarioInsertDTO.getEmail(), usuarioInsertDTO.getPassword()
-                );
-        // Autentica o usuário com as credenciais fornecidas
+           new UsernamePasswordAuthenticationToken(usuarioInsertDTO.getEmail(), usuarioInsertDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
-        // Obtém o objeto UserDetails do usuário autenticado
         Usuario userDetails = (Usuario) authentication.getPrincipal();
         String token = jwtTokenService.generateToken(userDetails);
-        // Gera um token JWT para o usuário autenticado
+        
           return token;
     }
     public  void mapDTOToUser(Usuario usuario, UsuarioDTO usuarioDTO){
@@ -177,6 +173,7 @@ public class UsuarioService implements UserDetailsService {
         usuario.setPrimeiro_nome(usuarioDTO.getPrimeiroNome());
         usuario.setSegundo_nome(usuarioDTO.getSegundoNome());
         usuario.setEstadoDaConta(usuarioDTO.isEstado_da_conta());
+        usuario.setId(usuarioDTO.getId());
 
         if (usuarioDTO.getRoleDTO() != null){
             Role role = roleRepository.findById(usuarioDTO.getRoleDTO().getId()).orElseThrow(

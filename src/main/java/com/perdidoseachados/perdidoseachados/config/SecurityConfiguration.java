@@ -54,7 +54,7 @@ public class SecurityConfiguration  {
                                 .requestMatchers(HttpMethod.GET, ENDPOINTS_WITH_AUTHENTICATION_REQUIRED_USER_ADMIN).authenticated()// Precisa de autenticação tanto para usuários quanto para administradores
 
 
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
 
                                 )
                 .addFilterBefore(userAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).build();

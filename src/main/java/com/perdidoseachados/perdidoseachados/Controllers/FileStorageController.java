@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,13 +45,18 @@ public class FileStorageController {
     try {
       Path targetLocation = fileStorageLocation.resolve(fileName);
       file.transferTo(targetLocation);
+      Path filePath = fileStorageLocation.resolve(fileName);
+      String name = filePath.toString();
+
+
+
 
       String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
           .path("/api/files/download/")
           .path(fileName)
           .toUriString();
 
-      return ResponseEntity.ok("File uploaded successfully. Download link: " + fileDownloadUri);
+      return ResponseEntity.ok("File uploaded successfully. Download link: " + name);
     } catch (IOException ex) {
       ex.printStackTrace();
       return ResponseEntity.badRequest().body("File upload failed.");
@@ -60,7 +66,9 @@ public class FileStorageController {
   @GetMapping("/download/{fileName:.+}")
   public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,
       HttpServletRequest request) throws IOException {
-    Path filePath = fileStorageLocation.resolve(fileName).normalize();
+    Path filePath = fileStorageLocation.resolve(fileName);
+      String name = filePath.toString();
+
     try {
       Resource resource = new UrlResource(filePath.toUri());
 
@@ -84,6 +92,7 @@ public class FileStorageController {
         .map(Path::getFileName)
         .map(Path::toString)
         .collect(Collectors.toList());
+
 
     return ResponseEntity.ok(fileNames);
   }

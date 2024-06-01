@@ -90,9 +90,16 @@ public class ItemService {
     public ItemDTO Update (Long id,ItemDTO itemDTO){
 
         Item entity = itemRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Item nao encontrado, falha ao fazer update do item"));
-        mapDTOTOItem(entity,itemDTO);
-        entity = itemRepository.save(entity);
-        return new ItemDTO(entity);
+
+        if (authService.authenticateed().getId() == entity.getUsuario().getId() || authService.authenticateed().hasRole("ADMIN")){
+            mapDTOTOItem(entity,itemDTO);
+            entity = itemRepository.save(entity);
+            return new ItemDTO(entity);
+        }
+
+        return  null;
+
+
 
     }
 
