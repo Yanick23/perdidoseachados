@@ -39,7 +39,7 @@ public class ItemService {
 
     @Transactional
     public List <ItemDTO>  findAll(){
-        List<Item> itens = itemRepository.findAll();
+        List<Item> itens = itemRepository.findAllOrderedByDatapublicacao();
         return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
     }
 
@@ -92,7 +92,9 @@ public class ItemService {
         Item entity = itemRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Item nao encontrado, falha ao fazer update do item"));
 
         if (authService.authenticateed().getId() == entity.getUsuario().getId() || authService.authenticateed().hasRole("ADMIN")){
-            mapDTOTOItem(entity,itemDTO);
+            mapDTOTOItem(entity,itemDTO)
+            ;entity.setEstadoDeDevolucao(EstadoDeDevolucao.NAO_DEVOLVIDO);
+            entity.setDatapublicacao(Instant.now());
             entity = itemRepository.save(entity);
             return new ItemDTO(entity);
         }
@@ -143,16 +145,20 @@ public class ItemService {
             entity.setEstado(estado);
         }
 
-        entity.setDescricao(itemDTO.getDescricao());
-        entity.setFoto(itemDTO.getFoto());
-        entity.setEstadoDeDevolucao(itemDTO.getEstadoDeDevolucao());
-        entity.setDataEhoraEncontradoOuPerdido(itemDTO.getDataEhoraEncontradoOuPerdido());
-        entity.setNome(itemDTO.getNome());
-        if(itemDTO.getExpriracaoNoFeed()  != null) {
-        	entity.setExpiracaoNoFeed(itemDTO.getExpriracaoNoFeed());
-        	
-        }
-        
+
+            entity.setDescricao(itemDTO.getDescricao());
+            entity.setFoto(itemDTO.getFoto());
+            entity.setEstadoDeDevolucao(itemDTO.getEstadoDeDevolucao());
+            entity.setDataEhoraEncontradoOuPerdido(itemDTO.getDataEhoraEncontradoOuPerdido());
+            entity.setNome(itemDTO.getNome());
+            if(itemDTO.getExpriracaoNoFeed()  != null) {
+                entity.setExpiracaoNoFeed(itemDTO.getExpriracaoNoFeed());
+
+            }
+
+
+
+
       
     }
 

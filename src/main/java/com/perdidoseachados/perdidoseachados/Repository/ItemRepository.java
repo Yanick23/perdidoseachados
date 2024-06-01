@@ -17,6 +17,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List <Item> findByUsuario(Usuario user);
 
+    @Query("SELECT i FROM Item i ORDER BY i.datapublicacao ASC")
+    List<Item> findAllOrderedByDatapublicacao();
+
     @Query("SELECT i FROM Item i WHERE i.estadoDeDevolucao = :estado AND i.expiracaoNoFeed > :agora")
     List<Item> findItemsForFeed(@Param("estado") EstadoDeDevolucao estado, @Param("agora") Instant agora);
 
