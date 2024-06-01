@@ -48,7 +48,7 @@ public class ItemService {
         return  itemRepository.findItemsByFilters(estado, Instant.now(), nomeCategoria, nomeLocalizacao, nomeEstado)
                 .stream().map(item -> new ItemDTO(item)).collect(Collectors.toList());
     }
-
+   //l
 
     @Transactional
     public List <ItemDTO>  findItemsForFeed(){
