@@ -1,6 +1,9 @@
 package com.perdidoseachados.perdidoseachados.Controllers;
 
+import com.perdidoseachados.perdidoseachados.DTOs.CategoriaItemDTO;
 import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
+import com.perdidoseachados.perdidoseachados.DTOs.LocalizacaoItensDTO;
+import com.perdidoseachados.perdidoseachados.DTOs.MesItensDTO;
 import com.perdidoseachados.perdidoseachados.Servicies.ItemService;
 import com.perdidoseachados.perdidoseachados.constantes.EstadoDeDevolucao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.Instant;
 import java.util.List;
 
 
@@ -65,6 +67,22 @@ public class ItemController<itemDTO> {
         return   ResponseEntity.noContent().build();
     }
 
+
+
+    @GetMapping("/by-month")
+    public List<MesItensDTO> getItemsRegisteredByMonth(@RequestParam int year) {
+        return itemService.getItemsRegisteredByMonth(year);
+    }
+
+    @GetMapping("/by-category")
+    public List<CategoriaItemDTO> getItemsRegisteredByCategory() {
+        return itemService.getItemsRegisteredByCategory();
+    }
+
+    @GetMapping("/by-location")
+    public List<LocalizacaoItensDTO> getItemsRegisteredByLocation() {
+        return itemService.getItemsRegisteredByLocation();
+}
     @GetMapping("/filtrar")
     public ResponseEntity<List<ItemDTO>> findItemsByFilters(
             @RequestParam(required = false) String estadoDeDevolucaoStr,

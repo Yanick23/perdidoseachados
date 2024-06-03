@@ -40,23 +40,27 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByEstado(Estado estado);
     List<Item> findByLocalizacao(Localizacao localizacao);
 
-
-// TODO 1. **Relatório de Estatísticas Gerais de Itens Registrados:** Este relatório pode incluir informações sobre o número total de itens registrados até o momento.
-
-// TODO 2. **Relatório de Itens Registrados por Mês:** Este relatório mostra a quantidade de itens registrados a cada mês, permitindo visualizar tendências ao longo do tempo.
-
-// TODO 3. **Relatório de Itens Registrados por Categoria:** Este relatório divide os itens registrados em diferentes categorias e mostra a distribuição de itens em cada categoria.
-
-// TODO 4. **Relatório de Itens Registrados por Localização:** Este relatório mostra a distribuição geográfica dos itens registrados, permitindo visualizar onde estão concentrados os itens.
-
-// TODO 5. **Relatório de Itens Registrados por Usuário:** Este relatório mostra os itens registrados por cada usuário, permitindo monitorar a atividade de cada usuário.
-
-// TODO 6. **Relatório de Itens Registrados por Estado:** Se os itens tiverem um atributo de estado (por exemplo, "em andamento", "concluído", "pendente"), este relatório pode mostrar a distribuição de itens com base em seus estados.
-
-// TODO 7. **Relatório de Itens Registrados por Prioridade:** Se os itens tiverem uma prioridade associada (por exemplo, "alta", "média", "baixa"), este relatório pode mostrar a distribuição de itens com base em suas prioridades.
-
-// TODO 8. **Relatório de Itens Registrados por Data de Criação:** Este relatório mostra a quantidade de itens registrados em diferentes intervalos de tempo (por exemplo, por dia, por semana, por mês).
+    @Query("SELECT COUNT(*) FROM Item")
+    long countTotalItemsRegistered();
 
 
+    @Query("SELECT EXTRACT(MONTH FROM i.datapublicacao) AS mes, COUNT(*) AS total_itens_registrados " +
+            "FROM Item i WHERE EXTRACT(YEAR FROM i.datapublicacao) = :ano GROUP BY mes")
+    List<Object[]> countItemsRegisteredByMonth(@Param("ano") int ano);
+
+
+    @Query("SELECT i.categoria.nome AS nome_categoria, COUNT(*) AStotal_itens_registrados " +"FROM Item i GROUP BY nome_categoria")
+    List<Object[]> countItemsRegisteredByCategory();
+
+
+    @Query("SELECT i.localizacao.nome AS nome_localizacao, COUNT(*) AS total_itens_registrados FROM Item i GROUP BY nome_localizacao")
+    List<Object[]> countItemsRegisteredByLocation();
+
+
+    @Query("SELECT i.estado.nome AS nome_estado, COUNT(*) AS total_itens_registrados FROM Item i GROUP BY nome_estado")
+    List<Object[]> countItemsRegisteredByState();
+
+    @Query("SELECT DATE_TRUNC('day', i.datapublicacao) AS data_criacao, COUNT(*) AS total_itens_registrados FROM Item i GROUP BY data_criacao")
+    List<Object[]> countItemsRegisteredByCreationDate();
 
 }

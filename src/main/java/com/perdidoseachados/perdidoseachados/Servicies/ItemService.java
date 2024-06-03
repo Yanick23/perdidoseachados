@@ -1,5 +1,8 @@
 package com.perdidoseachados.perdidoseachados.Servicies;
+import com.perdidoseachados.perdidoseachados.DTOs.CategoriaItemDTO;
 import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
+import com.perdidoseachados.perdidoseachados.DTOs.LocalizacaoItensDTO;
+import com.perdidoseachados.perdidoseachados.DTOs.MesItensDTO;
 import com.perdidoseachados.perdidoseachados.Entidades.*;
 import com.perdidoseachados.perdidoseachados.Repository.*;
 import com.perdidoseachados.perdidoseachados.Servicies.exeptions.DataBaseExeption;
@@ -12,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,15 +79,22 @@ public class ItemService {
     public ItemDTO Insert (ItemDTO itemDTO){
         Item entity = new Item();
         Usuario usuario = authService.authenticateed();
-       
+
 
         mapDTOTOItem(entity,itemDTO);
         entity.setEstadoDeDevolucao(EstadoDeDevolucao.NAO_DEVOLVIDO);
          entity.setDatapublicacao(Instant.now());
-        
+
         entity.setUsuario(usuario);
         entity = itemRepository.save(entity);
         return new ItemDTO(entity);
+    }
+
+
+    @Transactional
+    public long countTotalItemsRegistered(){
+        long quantidade = itemRepository.countTotalItemsRegistered();
+        return quantidade;
     }
 
     @Transactional
@@ -119,6 +130,20 @@ public class ItemService {
             throw new DataBaseExeption("Integrity violation");
         }
     }
+
+    public List<CategoriaItemDTO> getItemsRegisteredByCategory() {
+        List<Object[]> results = itemRepository.countItemsRegisteredByCategory();
+        List<CategoriaItemDTO> itemList = new ArrayList<>();
+        for (Object[] result : results) {
+            String nomeCategoria = (String) result[0];
+            Long totalItensRegistrados = (Long) result[1];
+            itemList.add(new CategoriaItemDTO(nomeCategoria, totalItensRegistrados));
+        }
+        return itemList;
+    }
+
+
+
 
     public void mapDTOTOItem(Item entity, ItemDTO itemDTO){
 
@@ -159,8 +184,29 @@ public class ItemService {
 
 
 
-      
+
     }
 
 
+    public List<MesItensDTO> getItemsRegisteredByMonth(int year) {
+        List<Object[]> results = itemRepository.countItemsRegisteredByMonth(year);
+        List<MesItensDTO> itemList = new ArrayList<>();
+        for (Object[] result : results) {
+            Integer mes = (Integer) result[0];
+            Long totalItensRegistrados = (Long) result[1];
+            itemList.add(new MesItensDTO(mes, totalItensRegistrados));
+        }
+        return itemList;
+    }
+
+    public List<LocalizacaoItensDTO> getItemsRegisteredByLocation() {
+        List<Object[]> results = itemRepository.countItemsRegisteredByLocation();
+        List<LocalizacaoItensDTO> itemList = new ArrayList<>();
+        for (Object[] result : results) {
+            String nomeLocalizacao = (String) result[0];
+            Long totalItensRegistrados = (Long) result[1];
+            itemList.add(new LocalizacaoItensDTO(nomeLocalizacao, totalItensRegistrados));
+        }
+        return itemList;
+    }
 }
