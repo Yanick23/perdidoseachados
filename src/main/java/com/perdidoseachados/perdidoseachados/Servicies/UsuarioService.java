@@ -88,7 +88,7 @@ public class UsuarioService implements UserDetailsService {
     public UsuarioDTO insert( UsuarioInsertDTO usuarioDTO) {
         Usuario entity = new Usuario();
         Role role = new Role();
-        role.setId(usuarioDTO.getId());
+        role.setId(usuarioDTO.getRoleDTO().getId());
 
         mapDTOToUser(entity,usuarioDTO);
         entity.setPassword(usuarioDTO.getPassword());
