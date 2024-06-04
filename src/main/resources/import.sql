@@ -6,10 +6,25 @@ INSERT INTO Usuario (estado_da_conta, password, foto, primeiro_nome, segundo_nom
 INSERT INTO Usuario (estado_da_conta, password, foto, primeiro_nome, segundo_nome,email, telefone, role_id) VALUES (true, 'outraSenha456', 'caminho/para/foto2.jpg', 'Maria',  'Santos','Luis@gmail.com', '+9876543210', 1);
 INSERT INTO Usuario (estado_da_conta, password, foto, primeiro_nome, segundo_nome,email, telefone, role_id) VALUES (true, 'senhaSegura789', 'caminho/para/foto3.jpg', 'Pedro',  'Oliveira','pedro23@gmail.com', '+0123456789',2);
 
-INSERT INTO localizacao (nome) VALUES ('Localizacao 1');
-INSERT INTO localizacao (nome) VALUES ('Localizacaoo 2');
-INSERT INTO localizacao (nome) VALUES ('Localizacaoo 3');
-INSERT INTO localizacao (nome) VALUES ('Localizacao 4');
+INSERT INTO localizacao (nome) VALUES ('D1-SI1');
+INSERT INTO localizacao (nome) VALUES ('D1-SI2');
+INSERT INTO localizacao (nome) VALUES ('D1-SI3');
+INSERT INTO localizacao (nome) VALUES ('D1-SI4');
+INSERT INTO localizacao (nome) VALUES ('D1-SI5');
+INSERT INTO localizacao (nome) VALUES ('D1- 101');
+INSERT INTO localizacao (nome) VALUES ('D1-204');
+INSERT INTO localizacao (nome) VALUES ('E-203');
+INSERT INTO localizacao (nome) VALUES ('D2-204');
+INSERT INTO localizacao (nome) VALUES ('D2-106');
+INSERT INTO localizacao (nome) VALUES ('D1-202');
+INSERT INTO localizacao (nome) VALUES ('SM-119');
+INSERT INTO localizacao (nome) VALUES ('SM-122');
+INSERT INTO localizacao (nome) VALUES ('SM-123');
+INSERT INTO localizacao (nome) VALUES ('SM-114');
+INSERT INTO localizacao (nome) VALUES ('SM-115');
+INSERT INTO localizacao (nome) VALUES ('D!-cantina');
+
+
 
 INSERT INTO Categoria (nome) VALUES  ('Eletronicos');
 INSERT INTO Categoria (nome) VALUES  ('Livros');
