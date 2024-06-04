@@ -81,6 +81,8 @@ public class UsuarioController{
     public ResponseEntity<ResponseTokenDTO> authenticateUser(@RequestBody UsuarioInsertDTO loginUserDto) {
         String token = usuarioService.authenticateUser(loginUserDto);
 
+
+
         return new ResponseEntity<>( new ResponseTokenDTO(token), HttpStatus.OK);
     }
 

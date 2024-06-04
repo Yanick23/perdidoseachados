@@ -30,7 +30,7 @@ public class SecurityConfiguration  {
     // Endpoints que requerem autenticação para serem acessados
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
-            "/categorias/**","/categorias","/localizacoes","/localizacoes","/estados"
+            "/categorias","/localizacoes","/localizacoes","/estados"
 
     };
 
