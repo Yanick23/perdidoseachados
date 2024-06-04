@@ -26,6 +26,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,7 +88,7 @@ public class UsuarioService implements UserDetailsService {
     public UsuarioDTO insert( UsuarioInsertDTO usuarioDTO) {
         Usuario entity = new Usuario();
         Role role = new Role();
-        role.setId(5L);
+        role.setId(usuarioDTO.getId());
 
         mapDTOToUser(entity,usuarioDTO);
         entity.setPassword(usuarioDTO.getPassword());
@@ -106,6 +109,8 @@ public class UsuarioService implements UserDetailsService {
         entity = usuarioRepository.save(entity);
         return new UsuarioDTO(entity);
     }
+    
+
 
     @Transactional
     public String delete(Long id) {
