@@ -31,6 +31,7 @@ public class Usuario implements UserDetails, Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
+    @Column(length = 255)
     private String foto;
     @OneToMany(mappedBy = "usuario")
     private List<Item> itens;
