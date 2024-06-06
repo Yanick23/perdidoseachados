@@ -13,14 +13,14 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item   , Long> {
 
     List <Item> findByUsuario(Usuario user);
 
-    @Query("SELECT i FROM Item i ORDER BY i.datapublicacao ASC")
+    @Query("SELECT i FROM Item i ORDER BY i.datapublicacao DESC")
     List<Item> findAllOrderedByDatapublicacao();
 
-    @Query("SELECT i FROM Item i WHERE i.estadoDeDevolucao = :estado AND i.expiracaoNoFeed > :agora")
+    @Query("SELECT i FROM Item i WHERE i.estadoDeDevolucao = :estado AND i.expiracaoNoFeed > :agora ORDER BY i.datapublicacao DESC")
     List<Item> findItemsForFeed(@Param("estado") EstadoDeDevolucao estado, @Param("agora") Instant agora);
 
     @Query("SELECT i FROM Item i WHERE (:estado IS NULL OR i.estadoDeDevolucao = :estado) " +
@@ -42,6 +42,13 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT COUNT(*) FROM Item")
     long countTotalItemsRegistered();
+    
+    @Query("SELECT COUNT(*) FROM Item i WHERE i.datapublicacao BETWEEN :startOfMonth AND :endOfMonth")
+    Long findAllItemsRegisteredInCurrentMonth(@Param("startOfMonth") Instant startOfMonth, @Param("endOfMonth") Instant endOfMonth);
+
+    @Query("SELECT i FROM Item i WHERE i.datapublicacao BETWEEN :startOfWeek AND :endOfWeek")
+    Long findAllItemsRegisteredInCurrentWeek(@Param("startOfWeek") Instant startOfWeek, @Param("endOfWeek") Instant endOfWeek);
+
 
 
     @Query("SELECT EXTRACT(MONTH FROM i.datapublicacao) AS mes, COUNT(*) AS total_itens_registrados " +

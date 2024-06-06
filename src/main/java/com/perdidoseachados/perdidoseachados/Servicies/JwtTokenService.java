@@ -34,6 +34,12 @@ public class JwtTokenService {
             userInfo.put("username", usuario.getUsername()); // Adicione o nome de usuário
             userInfo.put("email", usuario.getEmail()); // Adicione o email do usuário (se aplicável)
 
+            System.out.println( JWT.create()
+                    .withIssuer(ISSUER)
+                    .withIssuedAt(creationDate())
+                    .withSubject(usuario.getUsername())
+                    .withClaim("userInfo", userInfo) // Adicione o mapa de informações do usuário
+                    .sign(algorithm));
             // Gere o token
             return JWT.create()
                     .withIssuer(ISSUER)

@@ -71,6 +71,8 @@ public class UsuarioController{
 
 
 
+
+
     @DeleteMapping(value = "/delete/{id}")
     public  ResponseEntity delete(@PathVariable Long id){
 

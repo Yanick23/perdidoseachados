@@ -1,8 +1,5 @@
 package com.perdidoseachados.perdidoseachados.Servicies;
-import com.perdidoseachados.perdidoseachados.DTOs.CategoriaItemDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.LocalizacaoItensDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.MesItensDTO;
+import com.perdidoseachados.perdidoseachados.DTOs.*;
 import com.perdidoseachados.perdidoseachados.Entidades.*;
 import com.perdidoseachados.perdidoseachados.Repository.*;
 import com.perdidoseachados.perdidoseachados.Servicies.exeptions.DataBaseExeption;
@@ -15,6 +12,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +51,27 @@ public class ItemService {
         return  itemRepository.findItemsByFilters(estado, Instant.now(), nomeCategoria, nomeLocalizacao, nomeEstado)
                 .stream().map(item -> new ItemDTO(item)).collect(Collectors.toList());
     }
-   //l
+    public Long getItemsRegisteredInCurrentMonth() {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfMonth = now.withDayOfMonth(1);
+        LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());
+
+        Instant startOfMonthInstant = startOfMonth.atStartOfDay().toInstant(ZoneOffset.UTC);
+        Instant endOfMonthInstant = endOfMonth.plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);
+
+        return itemRepository.findAllItemsRegisteredInCurrentMonth(startOfMonthInstant, endOfMonthInstant);
+    }
+
+    public Long getItemsRegisteredInCurrentWeek() {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfWeek = now.minusDays(now.getDayOfWeek().getValue() - 1);
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+        Instant startOfWeekInstant = startOfWeek.atStartOfDay().toInstant(ZoneOffset.UTC);
+        Instant endOfWeekInstant = endOfWeek.plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);
+
+        return itemRepository.findAllItemsRegisteredInCurrentWeek(startOfWeekInstant, endOfWeekInstant);
+    }
 
     @Transactional
     public List <ItemDTO>  findItemsForFeed(){
@@ -92,9 +111,9 @@ public class ItemService {
 
 
     @Transactional
-    public long countTotalItemsRegistered(){
+    public TotalDeItem countTotalItemsRegistered(){
         long quantidade = itemRepository.countTotalItemsRegistered();
-        return quantidade;
+        return new TotalDeItem( quantidade);
     }
 
     @Transactional

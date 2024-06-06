@@ -1,9 +1,6 @@
 package com.perdidoseachados.perdidoseachados.Controllers;
 
-import com.perdidoseachados.perdidoseachados.DTOs.CategoriaItemDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.ItemDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.LocalizacaoItensDTO;
-import com.perdidoseachados.perdidoseachados.DTOs.MesItensDTO;
+import com.perdidoseachados.perdidoseachados.DTOs.*;
 import com.perdidoseachados.perdidoseachados.Servicies.ItemService;
 import com.perdidoseachados.perdidoseachados.constantes.EstadoDeDevolucao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +28,6 @@ public class ItemController<itemDTO> {
     public ResponseEntity <List<ItemDTO>> findItemsForFeed(){
         return  ResponseEntity.ok(itemService.findItemsForFeed()) ;
     }
-
-
 
     @PostMapping("/registar")
     public ResponseEntity <ItemDTO> insert( @RequestBody ItemDTO itemDTO){
@@ -70,8 +65,8 @@ public class ItemController<itemDTO> {
 
 
     @GetMapping("/by-month")
-    public List<MesItensDTO> getItemsRegisteredByMonth(@RequestParam int year) {
-        return itemService.getItemsRegisteredByMonth(year);
+    public ResponseEntity <List<MesItensDTO>> getItemsRegisteredByMonth(@RequestParam int year) {
+        return ResponseEntity.ok(itemService.getItemsRegisteredByMonth(year));
     }
 
     @GetMapping("/by-category")
@@ -83,6 +78,25 @@ public class ItemController<itemDTO> {
     public List<LocalizacaoItensDTO> getItemsRegisteredByLocation() {
         return itemService.getItemsRegisteredByLocation();
 }
+
+    @GetMapping("/current-week")
+    public ResponseEntity<Long> getItemsRegisteredInCurrentWeek() {
+
+        Long TotalSemana = itemService.getItemsRegisteredInCurrentWeek();;
+        return ResponseEntity.ok(TotalSemana);
+    }
+
+    @GetMapping("/current-month")
+    public ResponseEntity<TotalMesCorrente> ggetItemsRegisteredInCurrentMonth() {
+        Long TotalMes = itemService.getItemsRegisteredInCurrentMonth();
+        return ResponseEntity.ok( new TotalMesCorrente(TotalMes));
+    }
+
+    @GetMapping("/total-tens")
+    public ResponseEntity <TotalDeItem> countTotalItemsRegistered(){
+        return ResponseEntity.ok(itemService.countTotalItemsRegistered());
+    }
+
     @GetMapping("/filtrar")
     public ResponseEntity<List<ItemDTO>> findItemsByFilters(
             @RequestParam(required = false) String estadoDeDevolucaoStr,
