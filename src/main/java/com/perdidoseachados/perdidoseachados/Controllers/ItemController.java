@@ -24,6 +24,12 @@ public class ItemController<itemDTO> {
         return  ResponseEntity.ok(itemService.findAll()) ;
     }
 
+    @GetMapping(value= "/localizacao/{id}")
+    public ResponseEntity <List<ItemDTO>> findByLocalizacao(@PathVariable Long id){
+        return  ResponseEntity.ok(itemService.findByLocalizacao(id)) ;
+    }
+
+
     @GetMapping("/feed")
     public ResponseEntity <List<ItemDTO>> findItemsForFeed(){
         return  ResponseEntity.ok(itemService.findItemsForFeed()) ;
@@ -87,7 +93,7 @@ public class ItemController<itemDTO> {
     }
 
     @GetMapping("/current-month")
-    public ResponseEntity<TotalMesCorrente> ggetItemsRegisteredInCurrentMonth() {
+    public ResponseEntity<TotalMesCorrente> getItemsRegisteredInCurrentMonth() {
         Long TotalMes = itemService.getItemsRegisteredInCurrentMonth();
         return ResponseEntity.ok( new TotalMesCorrente(TotalMes));
     }
@@ -96,6 +102,8 @@ public class ItemController<itemDTO> {
     public ResponseEntity <TotalDeItem> countTotalItemsRegistered(){
         return ResponseEntity.ok(itemService.countTotalItemsRegistered());
     }
+
+
 
     @GetMapping("/filtrar")
     public ResponseEntity<List<ItemDTO>> findItemsByFilters(

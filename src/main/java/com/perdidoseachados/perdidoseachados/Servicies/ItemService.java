@@ -51,6 +51,14 @@ public class ItemService {
         return  itemRepository.findItemsByFilters(estado, Instant.now(), nomeCategoria, nomeLocalizacao, nomeEstado)
                 .stream().map(item -> new ItemDTO(item)).collect(Collectors.toList());
     }
+
+    public  List<ItemDTO> findByLocalizacao(Long id){
+        Localizacao localizacao = new Localizacao();
+        localizacao.setId(id);
+        List<Item> itens = itemRepository.findByLocalizacao(localizacao);
+        return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
+
+    }
     public Long getItemsRegisteredInCurrentMonth() {
         LocalDate now = LocalDate.now();
         LocalDate startOfMonth = now.withDayOfMonth(1);

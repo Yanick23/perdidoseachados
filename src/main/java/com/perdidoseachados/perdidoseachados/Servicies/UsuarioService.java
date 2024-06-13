@@ -81,9 +81,6 @@ public class UsuarioService implements UserDetailsService {
     }
 
 
-
-
-
     @Transactional
     public UsuarioDTO insert( UsuarioInsertDTO usuarioDTO) {
         Usuario entity = new Usuario();
@@ -159,17 +156,25 @@ public class UsuarioService implements UserDetailsService {
         passwordResetTokenRepository.save(myToken);
     }
 
-    
+
     public String authenticateUser(UsuarioInsertDTO usuarioInsertDTO) {
-        
+
+        Usuario usuario = usuarioRepository.findByEmail(usuarioInsertDTO.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        if (!usuario.isAccountNonLocked()) {
+            return "Usuário está bloqueado, entre em contacto com o helpdesk";
+        }
+
+        // Procede com a autenticação
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-           new UsernamePasswordAuthenticationToken(usuarioInsertDTO.getEmail(), usuarioInsertDTO.getPassword());
+                new UsernamePasswordAuthenticationToken(usuarioInsertDTO.getEmail(), usuarioInsertDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         Usuario userDetails = (Usuario) authentication.getPrincipal();
+
         String token = jwtTokenService.generateToken(userDetails);
-        
-          return token;
+        return token;
     }
+
     public  void mapDTOToUser(Usuario usuario, UsuarioDTO usuarioDTO){
 
         usuario.setEmail(usuarioDTO.getEmail());
@@ -187,6 +192,24 @@ public class UsuarioService implements UserDetailsService {
         }
 
 
+    }
+
+
+    @Transactional
+    public void blockUser(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Usuario nao encontrado (UsuarioService -> blockUser() )"));
+        usuario.setEstadoDaConta(false);
+        usuarioRepository.save(usuario);
+    }
+
+
+    @Transactional
+    public void unblockUser(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Usuario nao encontrado (UsuarioService -> unblockUser() )"));
+        usuario.setEstadoDaConta(true);
+        usuarioRepository.save(usuario);
     }
 
 
