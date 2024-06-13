@@ -161,18 +161,22 @@ public class UsuarioService implements UserDetailsService {
 
         Usuario usuario = usuarioRepository.findByEmail(usuarioInsertDTO.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
-        if (!usuario.isAccountNonLocked()) {
-            return "Usuário está bloqueado, entre em contacto com o helpdesk";
+        if (!usuario.isEstadoDaConta()) {
+            String token = "Usuário está bloqueado, entre em contacto com o helpdesk";
+            return token;
+        }else {
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(usuarioInsertDTO.getEmail(), usuarioInsertDTO.getPassword());
+            Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            Usuario userDetails = (Usuario) authentication.getPrincipal();
+
+            String token = jwtTokenService.generateToken(userDetails);
+            return token;
+
         }
 
 
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(usuarioInsertDTO.getEmail(), usuarioInsertDTO.getPassword());
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        Usuario userDetails = (Usuario) authentication.getPrincipal();
 
-        String token = jwtTokenService.generateToken(userDetails);
-        return token;
     }
 
     public  void mapDTOToUser(Usuario usuario, UsuarioDTO usuarioDTO){
