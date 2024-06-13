@@ -208,7 +208,7 @@ public class UsuarioService implements UserDetailsService {
     @Transactional
     public void unblockUser(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Usuario nao encontrado (UsuarioService -> unblockUser() )"));
+                () -> new ResourceNotFoundException("Usuario h nao encontrado (UsuarioService -> unblockUser() )"));
         usuario.setEstadoDaConta(true);
         usuarioRepository.save(usuario);
     }
