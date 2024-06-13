@@ -62,6 +62,12 @@ public class UsuarioController{
         return  ResponseEntity.ok(usuarioDTO);
     }
 
+    @PutMapping(value ="block/{id}")
+    public ResponseEntity  blockUser (@PathVariable Long id){
+         usuarioService.blockUser(id);
+        return  ResponseEntity.ok("Usuario bloqueado");
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity <UsuarioDTO> findById(@PathVariable Long id)  {
         UsuarioDTO usuarioDTO = usuarioService.findById(id);

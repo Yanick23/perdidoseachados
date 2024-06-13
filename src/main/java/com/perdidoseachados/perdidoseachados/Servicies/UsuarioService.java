@@ -165,7 +165,7 @@ public class UsuarioService implements UserDetailsService {
             return "Usuário está bloqueado, entre em contacto com o helpdesk";
         }
 
-        // Procede com a autenticação
+
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(usuarioInsertDTO.getEmail(), usuarioInsertDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -197,6 +197,7 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public void blockUser(Long id) {
+        authService.valideSelfOrAdmin(id);
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Usuario nao encontrado (UsuarioService -> blockUser() )"));
         usuario.setEstadoDaConta(false);
