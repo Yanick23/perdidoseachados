@@ -94,10 +94,16 @@ public class UsuarioController{
     @PostMapping(value = "/login")
     public ResponseEntity<ResponseTokenDTO> authenticateUser(@RequestBody UsuarioInsertDTO loginUserDto) {
         String token = usuarioService.authenticateUser(loginUserDto);
+        HttpStatus httpStatus;
+        if(token == "Usuário está bloqueado, entre em contacto com o helpdesk"){
+             httpStatus = HttpStatus.CREATED;
+        }else{
+            httpStatus = HttpStatus.OK;
+        }
 
 
 
-        return new ResponseEntity<>( new ResponseTokenDTO(token), HttpStatus.OK);
+        return new ResponseEntity<>( new ResponseTokenDTO(token), httpStatus);
     }
 
 
