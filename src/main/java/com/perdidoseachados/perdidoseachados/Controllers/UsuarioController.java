@@ -70,7 +70,7 @@ public class UsuarioController{
     
     @PutMapping(value ="/unblockUser/{id}")
     public ResponseEntity  unblockUser (@PathVariable Long id){
-         usuarioService.blockUser(id);
+         usuarioService.unblockUser(id);
         return  ResponseEntity.ok(" Usuario desbloqueado");
     }
 
