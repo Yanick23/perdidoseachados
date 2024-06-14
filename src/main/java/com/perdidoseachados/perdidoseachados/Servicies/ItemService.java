@@ -83,7 +83,7 @@ public class ItemService {
 
     @Transactional
     public List <ItemDTO>  findItemsForFeed(){
-        List<Item> itens = itemRepository.findItemsForFeed(EstadoDeDevolucao.NAO_DEVOLVIDO, Instant.now());
+        List<Item> itens = itemRepository.findAll();
         return itens.stream().map(x -> new ItemDTO(x,x.getUsuario())).collect(Collectors.toList());
     }
 
